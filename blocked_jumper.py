@@ -10,6 +10,7 @@ from collections import defaultdict
 # A number between 2007 and 2012, or "All"
 SEASON = 'All'
 
+
 def player_stats():
     return {
         'before': {
@@ -27,6 +28,7 @@ def player_stats():
         'num_with_block': 0
     }
 
+
 def merge_dicts(x, y):
     for k in y.keys():
         x[k]['before']['fg'] += y[k]['before']['fg']
@@ -37,6 +39,7 @@ def merge_dicts(x, y):
         x[k]['other']['fga'] += y[k]['other']['fga']
         x[k]['num_with_block'] += y[k]['num_with_block']
 
+
 def update_total(total, y):
     for k in y.keys():
         total['before']['fg'] += y[k]['before']['fg']
@@ -46,6 +49,7 @@ def update_total(total, y):
         total['other']['fg'] += y[k]['other']['fg']
         total['other']['fga'] += y[k]['other']['fga']
         total['num_with_block'] += y[k]['num_with_block']
+
 
 def find_max_min(stats, cutoff):
     max_player = ''
@@ -66,9 +70,11 @@ def find_max_min(stats, cutoff):
 #            print_summary(stats[k])
     return [max_player, min_player]
 
+
 def print_header(txt):
     print txt
     print ''.join(['-' for i in txt])
+
 
 def print_summary(stats):
     print "Before block:          %d%% (%d FGA)" % (100 * stats['before']['fg'] / stats['before']['fga'], stats['before']['fga'])
@@ -96,7 +102,7 @@ for line in f:
         game_id = row[0]
         stats_temp = defaultdict(player_stats)
         num_games += 1
-    
+
     if 'Jump Shot' in row[3] or '3pt Shot' in row[3]:
         abbrev = re.findall('\[([A-Z]+).*?\]', row[3])[0]
         name = re.findall('\[.*?\] (.+?) ', row[3])[0]
@@ -157,22 +163,3 @@ for k in stats.keys():
 
 with open("output.json", "w") as f:
     f.write(json.dumps(out, sort_keys=True, indent=4))
-
-"""
-print "\n"
-print_header("GSW Curry")
-print_summary(stats['GSW Curry'])
-
-for cutoff in [50, 100, 150, 250, 400]:
-    players = find_max_min(stats, cutoff)
-
-    if players[0]:
-        print "\n"
-        print_header("Biggest drop off (>%d FGA):  %s" % (cutoff, players[0]))
-        print_summary(stats[players[0]])
-
-    if players[1]:
-        print "\n"
-        print_header("Biggest improvement (>%d FGA): %s" % (cutoff, players[1]))
-        print_summary(stats[players[1]])
-"""
