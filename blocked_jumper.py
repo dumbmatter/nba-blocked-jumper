@@ -103,7 +103,7 @@ for line in f:
         stats_temp = defaultdict(player_stats)
         num_games += 1
 
-    if 'Jump Shot' in row[3] or '3pt Shot' in row[3]:
+    if ('Jump' in row[3] and 'hot' in row[3]) or '3pt Shot' in row[3]:
         abbrev = re.findall('\[([A-Z]+).*?\]', row[3])[0]
         name = re.findall('\[.*?\] (.+?) ', row[3])[0]
 
